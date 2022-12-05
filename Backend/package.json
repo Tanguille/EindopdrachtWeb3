@@ -1,18 +1,18 @@
 {
-  "name": "expressgenerator",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "nodemon ./bin/www"
-  },
-  "dependencies": {
-    "dotenv": "^16.0.3",
-    "postgres": "^3.3.2",
-    "@prisma/client": "^4.6.1",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "^4.18.2",
-    "morgan": "~1.9.1",
-    "prisma": "^4.6.1"
-  }
+	"name": "EindopdrachtWeb3_Backend",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "nodemon ./bin/www"
+	},
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"postgres": "^3.3.2",
+		"@prisma/client": "^4.6.1",
+		"cookie-parser": "~1.4.4",
+		"debug": "~2.6.9",
+		"express": "^4.18.2",
+		"morgan": "~1.9.1",
+		"prisma": "^4.6.1"
+	}
 }

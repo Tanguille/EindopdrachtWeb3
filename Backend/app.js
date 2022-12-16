@@ -1,11 +1,11 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/studenten');
 
 const app = express();
 
@@ -14,9 +14,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(dotenv);
+
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/studenten', usersRouter);
 
 module.exports = app;

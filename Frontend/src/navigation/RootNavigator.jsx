@@ -9,11 +9,11 @@ import StudentScreen from '../screens/StudentScreen';
 
 const RootNavigator = () => {
     return <Routes>
-        {/* <Route path="/" element={<LoginScreen />} /> */}
         <Route path="/" element={<BaseComponent />} />
         <Route path="/admin" element={<AdminScreen />} />
         <Route path="/host" element={<HostScreen />} />
         <Route path="/student" element={<StudentScreen />} />
+        <Route path="/student/login" element={<LoginScreen />} />
         <Route path="*" element={<ErrorScreen />} />
     </Routes>
 }

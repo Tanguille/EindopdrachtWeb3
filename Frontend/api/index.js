@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const API_URL = 'http://localhost:5050';
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const getStudents = async () => {
     const response = await Axios({

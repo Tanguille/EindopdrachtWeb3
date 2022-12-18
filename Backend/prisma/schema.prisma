@@ -36,11 +36,11 @@ model GroepStudent {
 }
 
 model Groep {
-  id        Int            @id @default(autoincrement())
-  naam      String         @db.VarChar(191)
-  createdAt DateTime       @default(now())
-  geldig    Int            @default(1)
-  Student   GroepStudent[] //Klopt dit wel?  
+  id           Int            @id @default(autoincrement())
+  naam         String         @db.VarChar(191)
+  createdAt    DateTime       @default(now())
+  geldig       Int            @default(1)
+  GroepStudent GroepStudent[]
 }
 
 model Rapport {

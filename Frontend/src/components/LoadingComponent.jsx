@@ -1,8 +1,17 @@
 import React from 'react'
 
-const LoadingComponent = () => {
+const LoadingComponent = (loadingMessage) => {
     return (
-        <div>LoadingComponent</div>
+        <div>
+            <div>
+                {/* Display a spinning loading indicator */}
+                <i className="fas fa-spinner fa-spin fa-3x"></i>
+            </div>
+            <div>
+                {/* Display the current loading message */}
+                <p>{loadingMessage}</p>
+            </div>
+        </div>
     )
 }
 

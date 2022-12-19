@@ -35,7 +35,7 @@ const BaseComponent = (queryKey, component) => {
         return <ErrorScreen error={error} />;
     } else {
         return (
-            <div>
+            <div className='w-full'>
                 {component}
             </div>
         )

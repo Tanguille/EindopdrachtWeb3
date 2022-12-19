@@ -3,7 +3,7 @@ import RootNavigator from './navigation/RootNavigator';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App w-full">
       <RootNavigator />
     </div>
   );

@@ -14,9 +14,14 @@ const BaseComponent = (queryKey, component) => {
         refetchInterval: 5 * 60 * 1000,
         queryFn: async () => {
             try {
-                const response = await Axios.get(API_URL + queryKey);
-                console.log("response", response.data)
-                return response.data;
+                //TODO: POST response toevoegen indien login
+                if (queryKey !== "login") {
+                    const response = await Axios.get(`${API_URL}{queryKey}`);
+                    console.log("response", response.data)
+                    return response.data;
+                } else {
+                    return queryKey;
+                }
             } catch (error) {
                 console.log(API_URL + queryKey);
                 console.log(error);

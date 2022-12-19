@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LoadingComponent = (loadingMessage) => {
+const LoadingComponent = ({ loadingMessage }) => {
     return (
         <div>
             <div>

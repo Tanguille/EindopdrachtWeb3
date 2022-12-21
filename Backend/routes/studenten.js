@@ -4,7 +4,7 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-/* GET users listing. */
+/* GET studenten */
 router.get('/', async (req, res, next) => {
   try {
     const alleStudenten = await prisma.Student.findMany();
@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-/* GET user by email. */
+/* GET student by email. */
 router.get('/:email', async (req, res, next) => {
   try {
     const student = await prisma.Student.findUnique({

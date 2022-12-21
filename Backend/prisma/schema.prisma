@@ -12,33 +12,27 @@ datasource db {
 
 model Student {
   id             Int            @id @default(autoincrement())
-  code           String         @db.VarChar(191)
   gebruikersNaam String         @db.VarChar(191)
+  pinCode        String         @db.VarChar(191)
   familieNaam    String         @db.VarChar(191)
   voorNaam       String         @db.VarChar(191)
-  sorteerNaam    String         @db.VarChar(191)
   email          String         @db.VarChar(191)
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
   geldig         Int            @default(1)
   GroepStudent   GroepStudent[]
   Rapport        Rapport[]
 }
 
 model GroepStudent {
-  groepId   Int      @unique
-  studentId Int      @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  geldig    Int      @default(1)
-  groep     Groep    @relation(fields: [groepId], references: [id])
-  student   Student  @relation(fields: [studentId], references: [id])
+  groepId   Int     @unique
+  studentId Int     @unique
+  geldig    Int     @default(1)
+  groep     Groep   @relation(fields: [groepId], references: [id])
+  student   Student @relation(fields: [studentId], references: [id])
 }
 
 model Groep {
   id           Int            @id @default(autoincrement())
   naam         String         @db.VarChar(191)
-  createdAt    DateTime       @default(now())
   geldig       Int            @default(1)
   GroepStudent GroepStudent[]
 }
@@ -47,8 +41,6 @@ model Rapport {
   id                Int             @id @default(autoincrement())
   status            Int
   extraMinuten      Int
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
   geldig            Int             @default(1)
   studentId         Int
   opdrachtElementId Int             @unique
@@ -58,21 +50,17 @@ model Rapport {
 }
 
 model VraagStudent {
-  id           Int      @id @default(autoincrement())
-  beschrijving String   @db.VarChar(191)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  geldig       Int      @default(1)
-  rapportId    Int      @unique
-  rapport      Rapport  @relation(fields: [rapportId], references: [id])
+  id           Int     @id @default(autoincrement())
+  beschrijving String  @db.VarChar(191)
+  geldig       Int     @default(1)
+  rapportId    Int     @unique
+  rapport      Rapport @relation(fields: [rapportId], references: [id])
 }
 
 model OpdrachtElement {
   id           Int      @id @default(autoincrement())
   beschrijving String   @db.VarChar(191)
   minuten      Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
   geldig       Int      @default(1)
   opdrachtId   Int      @unique
   opdracht     Opdracht @relation(fields: [opdrachtId], references: [id])
@@ -82,8 +70,6 @@ model OpdrachtElement {
 model Opdracht {
   id           Int               @id @default(autoincrement())
   naam         String            @db.VarChar(191)
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
   geldig       Int               @default(1)
   OpdrachtElem OpdrachtElement[]
 }

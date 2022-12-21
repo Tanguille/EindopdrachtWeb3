@@ -3,8 +3,8 @@ import BaseComponent from '../components/BaseComponent'
 import Navbar from '../components/Navbar'
 
 const StudentScreen = () => {
-    const studenten = []
-    BaseComponent(studenten, StudentScreen);
+    //const student = []
+    //BaseComponent(student, StudentScreen);
 
     return (
         <div>
@@ -13,6 +13,5 @@ const StudentScreen = () => {
         </div>
     )
 }
-
 
 export default StudentScreen

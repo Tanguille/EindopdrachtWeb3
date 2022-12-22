@@ -9,6 +9,7 @@ const auth = (req, res, next) => {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
             if (err) {
+                console.log(err);
                 return res.status(401).json({ message: 'Authorisation problem' });
             }
 
@@ -18,6 +19,7 @@ const auth = (req, res, next) => {
 
         next();
     } catch (error) {
+        console.log(err);
         res.status(500).json({ message: error.message });
     }
 }

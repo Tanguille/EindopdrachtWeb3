@@ -23,6 +23,7 @@ app.use(cors({
 
 //Authentication middleware
 app.use((req, res, next) => {
+    console.log("req.headers:", req.headers);
     if (req.path === '/login') {
         next();
     } else

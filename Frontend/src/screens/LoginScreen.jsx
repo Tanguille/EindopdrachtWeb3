@@ -29,6 +29,7 @@ const LoginScreen = () => {
     const handleLogin = async (values) => {
         try {
             const response = await Axios.post(`${config.API_URL}/login`, {
+                withCredentials: true,
                 email: values.email,
                 pinCode: values.pinCode,
             },

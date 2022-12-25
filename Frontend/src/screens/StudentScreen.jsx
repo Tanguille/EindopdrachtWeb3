@@ -1,15 +1,16 @@
 import React from 'react'
+import AssignmentComponent from '../components/AssignmentComponent';
 import BaseComponent from '../components/BaseComponent'
-import Navbar from '../components/Navbar'
+import StudentNavbar from '../components/StudentComponents/StudentNavbar'
 
 const StudentScreen = () => {
-    const student = ["student"];
+    const student = "student";
     BaseComponent(student, StudentScreen);
 
     return (
         <div>
-            <Navbar />
-            <h1>StudentScreen</h1>
+            <StudentNavbar />
+            <AssignmentComponent />
         </div>
     )
 }

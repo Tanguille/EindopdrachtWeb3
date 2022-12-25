@@ -14,6 +14,7 @@ router.post('/', async (req, res, next) => {
         res.status(500).json({ message: error.message });
     }
 })
+//TODO: Fix
 
 // csvData.forEach(async (row) => {
 //     const Student = await prisma.Student.create({

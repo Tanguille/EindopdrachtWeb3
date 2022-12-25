@@ -1,6 +1,5 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom';
-import BaseComponent from '../BaseComponent'
 
 const AdminNavbar = () => {
     return (
@@ -26,7 +25,7 @@ const AdminNavbar = () => {
                                 <a href="#" className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Home</a>
                             </li>
                             <li>
-                                <NavLink to="/admin/csv" activeclassName="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">
+                                <NavLink to="/admin/csv">
                                     <button className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">CSV</button>
                                 </NavLink>
                             </li>

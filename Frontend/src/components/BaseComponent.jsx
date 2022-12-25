@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from './LoadingComponent';
 import ErrorScreen from '../screens/ErrorScreen';

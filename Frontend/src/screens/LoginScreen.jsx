@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import BaseComponent from '../components/BaseComponent';
+import 'react-toastify/dist/ReactToastify.css';
 import config from '../config.json';
 
 const LoginScreen = () => {
@@ -40,9 +40,9 @@ const LoginScreen = () => {
             if (response.status === 200) {
                 navigate('/student');
             }
-            else toast("Uw email of pincode is incorrect.")
+            else toast.info("Uw email of pincode is incorrect.")
         } catch (error) {
-            toast(error.message);
+            toast.error(errors.message);
         }
     }
 
@@ -60,7 +60,7 @@ const LoginScreen = () => {
                             name="email"
                             type="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="jean.janssens@student.hogent.be"
+                            placeholder="jan.janssens@student.hogent.be"
                             required
                         />
                     </div>

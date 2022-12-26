@@ -6,7 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 const auth = require('./middlewares/authenticator');
 
-const studentRouter = require('./routes/studenten');
+const studentRouter = require('./routes/student');
 const loginRouter = require('./routes/login');
 const csvRouter = require('./routes/csv');
 
@@ -18,21 +18,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: ['http://localhost:3000'],
     credentials: true
 }));
 
 //Authentication middleware
 app.use((req, res, next) => {
-    console.log("req.headers:", req.headers);
-    if (req.path === '/login') {
+    //console.log("req.headers:", req.headers);
+    if (req.path !== '/student') {
         next();
     } else
         auth(req, res, next);
 });
 
 //Routes
-app.use('/studenten', studentRouter);
+app.use('/student', studentRouter);
 app.use('/login', loginRouter);
 app.use('/csv', csvRouter);
 

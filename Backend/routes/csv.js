@@ -20,6 +20,7 @@ router.post('/', async (req, res) => {
     //console.log(csvData[0].Opdracht);
 
     if (csvData[0].Opdracht !== undefined) {
+        //TODO: Loop in loop voor opdrachtelementen.
         csvData.map(async csvOpdracht => {
             const newOpdracht = await prisma.Opdracht.create({
                 data: {

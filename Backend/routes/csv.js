@@ -9,71 +9,54 @@ const prisma = new PrismaClient();
 
 //Post csv data
 router.post('/', async (req, res) => {
+    let csvData;
     try {
-        //var zodat ik het uit try block de variabele kan gebruiken
-        var csvData = req.body;
+        csvData = req.body;
         res.status(200).json(csvData);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 
-    console.log(csvData);
+    //console.log(csvData[0].Opdracht);
 
-    // if (csvData[0].includes("Officiële code")) {
-    //     console.log("Opdracht");
-    //     // csvData.map(element => {
-    //     //     const newOpdracht = prisma.Opdracht.create({
-    //     //         data: {
-    //     //             id: parseInt(element[1].slice(-1), 10),
-    //     //             naam: element[0],
-    //     //         }
-    //     //     });
-    //     //     const newOpdrachtElement = prisma.OpdrachtElement.create({
-    //     //         data: {
-    //     //             beschrijving: element[2],
-    //     //             minuten: element[3],
-    //     //         }
-    //     //     });
-    //     // });
-    // }
+    if (csvData[0].Opdracht !== undefined) {
+        csvData.map(async csvOpdracht => {
+            const newOpdracht = await prisma.Opdracht.create({
+                data: {
+                    id: parseInt(csvOpdracht.Titel.slice(-1), 10),
+                    naam: csvOpdracht.Opdracht,
+                }
+            });
+            const newOpdrachtElement = await prisma.OpdrachtElement.create({
+                data: {
+                    beschrijving: csvOpdracht.Beschrijving,
+                    minuten: csvOpdracht.Duurtijd,
+                }
+            });
+        });
+    } else if (csvData[0].Code !== undefined) {
+        //console.log(csvData[0].Code);
+        try {
 
-
-    // csvData.map(element => {
-    //     console.log(element);
-    //     //     const Student = await prisma.Student.create({
-    //     //         data: {
-    //     //             id: values[0],
-    //     //             name: values[1],
-    //     //             gebruikersNaam: values[2],
-    //     //             familieNaam: values[3],
-    //     //             voorNaam: values[4],
-    //     //             email: values[6],
-    //     //         },
-    // });
+            csvData.map(async csvStudent => {
+                const createManyStudents = await prisma.Student.createMany({
+                    data: [
+                        {
+                            id: parseInt(csvStudent.Code),
+                            pinCode: '0000',
+                            gebruikersNaam: csvStudent.Gebruikersnaam,
+                            familieNaam: csvStudent.Familienaam,
+                            voorNaam: csvStudent.Voornaam,
+                            email: csvStudent.Email,
+                        },
+                    ],
+                    skipDuplicates: true,
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 });
-
-
-//     const Group = await prisma.Group.create({
-//         data: {
-//             groepId: values[10],
-//         },
-//     });
-
-
-//     const newOpdracht = await prisma.Opdracht.create({
-//         data: {
-
-//             id: parseInt(values[1].slice(-1), 10),
-//             naam: values[0],
-//         }
-//     });
-
-//     const newOpdrachtElement = await prisma.OpdrachtElement.create({
-//         data: {
-//             beschrijving: values[2],
-//             minuten: values[3],
-//         }
-//     });
-// });
 
 module.exports = router;

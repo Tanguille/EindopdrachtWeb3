@@ -12,7 +12,6 @@ const API_URL = config.API_URL;
 const CSVFileInput = () => {
     const [selectedOption, setSelectedOption] = useState("");
     const [file, setFile] = useState(null);
-    const [data, setData] = useState([]);
 
     const handleChange = (event) => {
         setSelectedOption(event.target.value);
@@ -37,19 +36,18 @@ const CSVFileInput = () => {
 
         // Read the file
         Papa.parse(file, {
+            worker: true, // Don't bog down the main thread if its a big file
             header: true, // use the first row of the CSV as the header
             complete: (result) => {
-                // result.data contains the parsed data as an array of objects
-                setData(result.data);
+                // result.data contains the parsed data as an array of objects                
                 console.log(result.data[0]);
 
                 // Send the data to the backend
-                if (data.length > 0) {
-                    console.log(result.data);
+                if (result.data.length > 0) {
                     // send the data to the backend
                     console.log(`${API_URL}/csv`);
                     try {
-                        Axios.post(`${API_URL}/csv`, { data })
+                        Axios.post(`${API_URL}/csv`, result.data)
                             .then((res) => {
                                 // handle the response
                                 toast.success(res.data.message, "success");
@@ -94,7 +92,5 @@ const CSVFileInput = () => {
         </div>
     );
 };
-
-
 
 export default CSVFileInput;

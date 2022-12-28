@@ -7,7 +7,8 @@ import config from "../config.json";
 
 const API_URL = config.API_URL;
 
-const BaseComponent = async (queryKey, component) => {
+const BaseComponent = async ({ queryKey, component }) => {
+	let data;
 	console.log("querykey: ", queryKey);
 	const { isLoading, isError, error } = useQuery({
 		queryKey: [queryKey],
@@ -19,10 +20,11 @@ const BaseComponent = async (queryKey, component) => {
 					return <ErrorScreen error="Query key is undefined" />;
 				}
 				try {
-					const response = await Axios.get(`${API_URL}/${queryKey}`, {
+					data = await Axios.get(`${API_URL}/${queryKey}`, {
 						withCredentials: true,
 					});
-					return response.data;
+					console.log(data.data);
+					return data.data;
 				} catch (err) {
 					return <ErrorScreen error={err.message} />;
 				}

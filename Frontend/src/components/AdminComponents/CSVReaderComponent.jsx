@@ -10,12 +10,7 @@ import Papa from "papaparse";
 const API_URL = config.API_URL;
 
 const CSVFileInput = () => {
-    const [selectedOption, setSelectedOption] = useState("");
     const [file, setFile] = useState(null);
-
-    const handleChange = (event) => {
-        setSelectedOption(event.target.value);
-    };
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -69,14 +64,6 @@ const CSVFileInput = () => {
         <div>
             <AdminNavbar />
             <div className="flex w-full justify-center h-screen items-center">
-                {/* <select
-                    className="w-60 m-2 bg-gray-200 px-4 py-2 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onChange={handleChange}
-                    value={selectedOption}>
-                    <option value="student">Studenten en groepen</option>
-                    <option value="opdracht">Opdracht</option>
-                </select> */}
-
                 <input
                     type="file"
                     onChange={handleFileChange}

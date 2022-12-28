@@ -13,7 +13,7 @@ datasource db {
 model Student {
   id             Int            @id @default(autoincrement())
   gebruikersNaam String         @db.VarChar(191)
-  pinCode        String         @db.VarChar(191)
+  pinCode        String         @default("0000") @db.VarChar(191)
   familieNaam    String         @db.VarChar(191)
   voorNaam       String         @db.VarChar(191)
   email          String         @db.VarChar(191)
@@ -23,8 +23,9 @@ model Student {
 }
 
 model GroepStudent {
-  groepId   Int     @unique
-  studentId Int     @unique
+  id        Int     @id @default(autoincrement())
+  groepId   Int
+  studentId Int
   geldig    Int     @default(1)
   groep     Groep   @relation(fields: [groepId], references: [id])
   student   Student @relation(fields: [studentId], references: [id])
@@ -59,17 +60,17 @@ model VraagStudent {
 
 model OpdrachtElement {
   id           Int      @id @default(autoincrement())
-  beschrijving String   @db.VarChar(191)
+  beschrijving String   @db.VarChar(255)
   minuten      Int
   geldig       Int      @default(1)
-  opdrachtId   Int      @unique
+  opdrachtId   Int
   opdracht     Opdracht @relation(fields: [opdrachtId], references: [id])
   Rapport      Rapport?
 }
 
 model Opdracht {
-  id           Int               @id @default(autoincrement())
-  naam         String            @db.VarChar(191)
-  geldig       Int               @default(1)
-  OpdrachtElem OpdrachtElement[]
+  id              Int               @id @default(autoincrement())
+  naam            String            @db.VarChar(191)
+  geldig          Int               @default(1)
+  OpdrachtElement OpdrachtElement[]
 }

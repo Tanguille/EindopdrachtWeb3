@@ -1,21 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import StudentScreen from "../screens/StudentScreen";
+import BaseComponent from "./BaseComponent";
 
-const AssignmentComponent = () => {
-	const [assignments, setAssignments] = useState([
-		//TODO: Get assignments from server
-		{
-			name: "Assignment 1",
-			description: "Write an essay on the role of technology in education",
-			timeLeft: "3 days",
-			status: "ready",
-		},
-	]);
+const AssignmentComponent = ({ data }) => {
+	console.log(data);
+	const assignments = BaseComponent("opdracht", StudentScreen);
 
 	const handleStatusChange = (index, newStatus) => {
-		const newAssignments = [...assignments];
+		const newAssignments = data.data;
 		newAssignments[index].status = newStatus;
-		setAssignments(newAssignments);
+		//setAssignments(newAssignments);
 	};
 
 	return (

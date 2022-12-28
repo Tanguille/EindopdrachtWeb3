@@ -9,6 +9,7 @@ const auth = require('./middlewares/authenticator');
 const studentRouter = require('./routes/student');
 const loginRouter = require('./routes/login');
 const csvRouter = require('./routes/csv');
+const opdrachtRouter = require('./routes/opdracht');
 
 const app = express();
 
@@ -35,5 +36,6 @@ app.use((req, res, next) => {
 app.use('/student', studentRouter);
 app.use('/login', loginRouter);
 app.use('/csv', csvRouter);
+app.use('/opdracht', opdrachtRouter);
 
 module.exports = app;

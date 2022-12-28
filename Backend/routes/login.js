@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
         console.log("student:", student);
 
         if (student) {
-            res.cookie('token', token, { path: '/', httpOnly: true, withCredentials: true, sameSite: 'none' });
+            res.cookie('token', token, { path: '/', httpOnly: true, withCredentials: true, sameSite: 'none', secure: true });
             res.status(200).json(student);
         } else {
             res.send('Email of wachtwoord is onjuist');

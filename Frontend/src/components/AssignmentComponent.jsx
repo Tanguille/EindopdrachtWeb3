@@ -1,20 +1,26 @@
+import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import StudentScreen from "../screens/StudentScreen";
 import BaseComponent from "./BaseComponent";
 
-const AssignmentComponent = ({ data }) => {
-	console.log(data);
-	const assignments = BaseComponent("opdracht", StudentScreen);
+const AssignmentComponent = () => {
+	const client = useQueryClient();
+
+	const queryData = client.getQueryData(["opdracht"]);
+
+	const [assignments, setAssignments] = useState();
 
 	const handleStatusChange = (index, newStatus) => {
 		const newAssignments = data.data;
 		newAssignments[index].status = newStatus;
-		//setAssignments(newAssignments);
+		setAssignments(newAssignments);
 	};
 
 	return (
+		// dataX && (
 		<div className="w-3/4 mx-auto px-4 py-2 bg-white rounded-lg shadow-md">
+			<BaseComponent queryKey={["opdracht"]} component={StudentScreen} />
 			<h1 className="text-2xl font-bold text-gray-800 mb-4">Taken</h1>
 			<table className="w-full text-left table-collapse">
 				<thead>
@@ -52,6 +58,7 @@ const AssignmentComponent = ({ data }) => {
 			</table>
 		</div>
 	);
+	//);
 };
 
 export default AssignmentComponent;

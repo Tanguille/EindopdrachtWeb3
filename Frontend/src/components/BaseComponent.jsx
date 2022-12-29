@@ -7,36 +7,34 @@ import config from "../config.json";
 
 const API_URL = config.API_URL;
 
-const BaseComponent = async ({ queryKey, component }) => {
-	let data;
+const getData = async (queryKey) => {
+	try {
+		const response = await Axios.post(`${API_URL}/${queryKey}`, {
+			withCredentials: true,
+		});
+
+		return { ...response.data };
+	} catch (error) {
+		console.log(error);
+		return <ErrorScreen error={error.message} />;
+	}
+};
+
+const BaseComponent = ({ queryKey, component }) => {
 	console.log("querykey: ", queryKey);
-	const { isLoading, isError, error } = useQuery({
+	const { isLoading, isError, error, data } = useQuery({
 		queryKey: [queryKey],
 		cacheTime: 1000,
 		refetchInterval: 5 * 60 * 1000,
-		queryFn: async () => {
-			if (queryKey !== "login") {
-				if (queryKey === undefined) {
-					return <ErrorScreen error="Query key is undefined" />;
-				}
-				try {
-					data = await Axios.get(`${API_URL}/${queryKey}`, {
-						withCredentials: true,
-					});
-					console.log(data.data);
-					return data.data;
-				} catch (err) {
-					return <ErrorScreen error={err.message} />;
-				}
-			} else if (queryKey !== undefined) return queryKey;
-		},
+		queryFn: () => getData(queryKey),
 	});
 
 	if (isLoading) {
-		return <LoadingComponent loadingMessage={isLoading} />;
+		return <LoadingComponent />;
 	} else if (isError) {
 		return <ErrorScreen error={error} />;
 	} else {
+		console.log(data[0]);
 		return <div className="w-full">{component}</div>;
 	}
 };

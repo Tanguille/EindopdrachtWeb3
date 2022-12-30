@@ -21,7 +21,7 @@ const RootNavigator = () => {
 
 			<Route path="/student" element={<StudentScreen />} />
 			<Route
-				path="/student/assignments"
+				path="/student/opdracht/:assignmentId"
 				element={<AssignmentDetailComponent />}
 			/>
 			<Route path="/login" element={<LoginScreen />} />

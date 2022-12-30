@@ -2,24 +2,9 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from "./LoadingComponent";
 import ErrorScreen from "../screens/ErrorScreen";
-import Axios from "axios";
-import config from "../config.json";
+import getData from "../utils/rest";
 
-const API_URL = config.API_URL;
-
-const getData = async (queryKey) => {
-	try {
-		const response = await Axios.post(`${API_URL}/${queryKey}`, {
-			withCredentials: true,
-		});
-
-		return { ...response.data };
-	} catch (error) {
-		console.log(error);
-		return <ErrorScreen error={error.message} />;
-	}
-};
-
+//Deprecated
 const BaseComponent = ({ queryKey, component }) => {
 	console.log("querykey: ", queryKey);
 	const { isLoading, isError, error, data } = useQuery({

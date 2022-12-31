@@ -29,17 +29,18 @@ const AssignmentComponent = () => {
 			<table className="w-full text-left table-collapse">
 				<thead>
 					<tr>
-						<th className="px-4 py-2 font-bold text-2xl text-gray-800">Naam</th>
+						<th className="px-4 py-2 font-bold text-xl text-gray-800">Naam</th>
 					</tr>
 				</thead>
 				<tbody>
 					{assignments.map((assignment, index) => {
-						console.log(assignment.id);
+						console.log(assignment.naam);
 						return (
-							<tr key={assignment.naam}>
+							<tr key={index}>
 								<td className="px-4 py-2 text-xl text-gray-800">
 									<Link to={`opdracht/${assignment.id}`}>
-										<AssignmentDetailComponent assignment={assignment} />
+										{assignment.naam}
+										<div className="hidden"><AssignmentDetailComponent assignment={assignment} /></div>
 									</Link>
 								</td>
 							</tr>
@@ -47,7 +48,7 @@ const AssignmentComponent = () => {
 					})}
 				</tbody>
 			</table>
-		</div>
+		</div >
 	);
 };
 

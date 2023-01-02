@@ -10,6 +10,7 @@ const studentRouter = require('./routes/student');
 const loginRouter = require('./routes/login');
 const csvRouter = require('./routes/csv');
 const opdrachtRouter = require('./routes/opdracht');
+const opdrachtElementRouter = require('./routes/opdrachtElement');
 
 const app = express();
 
@@ -37,5 +38,6 @@ app.use('/student', studentRouter);
 app.use('/login', loginRouter);
 app.use('/csv', csvRouter);
 app.use('/opdracht', opdrachtRouter);
+app.use('/opdrachtElement', opdrachtElementRouter);
 
 module.exports = app;

@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import { Link } from "react-router-dom";
-import getData from "../utils/rest";
-import AssignmentDetailComponent from "./AssignmentDetailComponent";
+import ErrorScreen from "../screens/ErrorScreen";
+import { getData } from "../utils/rest";
 import LoadingComponent from "./LoadingComponent";
 
 const AssignmentComponent = () => {
-	const [assignments, setAssignments] = useState([]);
+	const queryKey = "opdracht";
 
-	useEffect(() => {
-		async function fetchData() {
-			try {
-				const queryData = await getData("opdracht");
-				setAssignments(queryData);
-			} catch (error) {
-				console.error(error);
-			}
-		}
-		fetchData();
-	}, []);
+	const { isLoading, isError, error, data: assignments } = useQuery({
+		queryKey: [queryKey],
+		cacheTime: 1000,
+		refetchInterval: 5 * 60 * 1000,
+		queryFn: async () => await getData(queryKey)
+	});
 
-	if (!assignments) {
-		return <LoadingComponent />;
-	}
+	isLoading && <LoadingComponent />;
+	isError && <ErrorScreen error={error} />;
 
-	return assignments.length > 0 && (
+	return assignments && (
 		<div className="w-1/2 mx-auto p-8 bg-white rounded-lg shadow-md">
 			<h1 className="text-2xl font-bold text-gray-800 mb-4">Taken</h1>
 			<table className="w-full text-left table-collapse">
@@ -33,14 +28,12 @@ const AssignmentComponent = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{assignments.map((assignment, index) => {
-						console.log(assignment.naam);
+					{assignments.data.map((assignment, index) => {
 						return (
 							<tr key={index}>
 								<td className="px-4 py-2 text-xl text-gray-800">
 									<Link to={`opdracht/${assignment.id}`}>
 										{assignment.naam}
-										<div className="hidden"><AssignmentDetailComponent assignment={assignment} /></div>
 									</Link>
 								</td>
 							</tr>

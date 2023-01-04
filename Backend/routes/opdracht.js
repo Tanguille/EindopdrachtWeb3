@@ -5,7 +5,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 //Post request
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const opdrachten = await prisma.Opdracht.findMany();
         if (opdrachten) {

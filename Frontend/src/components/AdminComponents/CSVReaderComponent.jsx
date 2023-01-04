@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AdminNavbar from "./AdminNavbar";
 import Axios from "axios";
 import config from "../../config.json";
 import ErrorScreen from "../../screens/ErrorScreen";
@@ -62,7 +61,6 @@ const CSVFileInput = () => {
 
     return (
         <div>
-            <AdminNavbar />
             <div className="flex w-full justify-center h-screen items-center">
                 <input
                     type="file"

@@ -40,8 +40,8 @@ model Groep {
 
 model Rapport {
   id                Int             @id @default(autoincrement())
-  status            Int
-  extraMinuten      Int
+  status            String
+  extraMinuten      Int?
   geldig            Int             @default(1)
   studentId         Int
   opdrachtElementId Int             @unique

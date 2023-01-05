@@ -12,9 +12,7 @@ const auth = (req, res, next) => {
                 console.log(err);
                 return res.status(401).json({ message: 'Authorisation problem' });
             }
-
-            console.log("payload:", payload);
-            req.user = payload;
+            req.student = payload;
         });
 
         next();

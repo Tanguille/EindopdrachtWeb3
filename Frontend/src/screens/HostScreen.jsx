@@ -1,8 +1,9 @@
 import React from 'react'
+import AssignmentComponent from '../components/AssignmentComponent'
 
 const HostScreen = () => {
     return (
-        <div>HostScreen</div>
+        <div><AssignmentComponent /></div>
     )
 }
 

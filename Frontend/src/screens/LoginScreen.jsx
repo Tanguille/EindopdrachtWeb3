@@ -35,7 +35,6 @@ const LoginScreen = () => {
             },
                 { withCredentials: true }
             );
-            console.log("response", response);
 
             if (response.status === 200) {
                 navigate('/student');
@@ -46,17 +45,15 @@ const LoginScreen = () => {
         }
     }
 
-    //BaseComponent("login", LoginScreen);
     return (
         <form onSubmit={handleSubmit}>
             <div className="flex w-full justify-center h-screen items-center">
                 <div>
+                    <h1 className='text-4xl font-bold text-gray-800 mb-4'>Welkom Student!</h1>
                     <div className="mb-6 w-full">
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email addres</label>
+                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email adres</label>
                         <input
                             onChange={handleChange}
-                            //error={errors?.name !== undefined}
-                            //helperText={errors?.name}
                             name="email"
                             type="email"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -69,8 +66,6 @@ const LoginScreen = () => {
                         <label htmlFor="pinCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pincode</label>
                         <input
                             onChange={handleChange}
-                            // error={errors?.name !== undefined}
-                            // helperText={errors?.name}
                             name="pinCode" type="password"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="••••"

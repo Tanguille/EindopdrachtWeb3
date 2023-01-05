@@ -33,9 +33,6 @@ const CSVFileInput = () => {
             worker: true, // Don't bog down the main thread if its a big file
             header: true, // use the first row of the CSV as the header
             complete: (result) => {
-                // result.data contains the parsed data as an array of objects                
-                console.log(result.data[0]);
-
                 // Send the data to the backend
                 if (result.data.length > 0) {
                     // send the data to the backend

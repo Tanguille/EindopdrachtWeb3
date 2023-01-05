@@ -11,6 +11,7 @@ const loginRouter = require('./routes/login');
 const csvRouter = require('./routes/csv');
 const opdrachtRouter = require('./routes/opdracht');
 const opdrachtElementRouter = require('./routes/opdrachtElement');
+const rapportRouter = require('./routes/rapport');
 
 const app = express();
 
@@ -27,7 +28,7 @@ app.use(cors({
 //Authentication middleware
 app.use((req, res, next) => {
     //console.log("req.headers:", req.headers);
-    if (req.path !== '/student') {
+    if (req.path == '/login') {
         next();
     } else
         auth(req, res, next);
@@ -39,5 +40,6 @@ app.use('/login', loginRouter);
 app.use('/csv', csvRouter);
 app.use('/opdracht', opdrachtRouter);
 app.use('/opdrachtElement', opdrachtElementRouter);
+app.use('/rapport', rapportRouter);
 
 module.exports = app;

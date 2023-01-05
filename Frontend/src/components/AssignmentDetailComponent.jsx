@@ -5,32 +5,64 @@ import ErrorScreen from "../screens/ErrorScreen";
 import { getData, putData } from "../utils/rest";
 import LoadingComponent from "./LoadingComponent";
 import StudentNavbar from "./StudentComponents/StudentNavbar";
+import Axios from "axios";
+import config from "../config";
+import QuestionComponent from "./StudentComponents/QuestionComponent";
 
 const AssignmentDetailComponent = () => {
 	const [subAssignments, setSubAssignments] = useState();
 	const [showQuestionInput, setShowQuestionInput] = useState(false);
+	const [rapports, setRapports] = useState();
+	const [checkStatus, setCheckStatus] = useState("");
 
-	const queryKey = "opdrachtElement";
-
+	const API_URL = config.API_URL;
+	const queryKey1 = "opdrachtElement";
+	const queryKey2 = "rapport";
 	// Dynamische parameter uit de url te halen
 	const { assignmentId } = useParams();
 
 	const { isLoading, isError, error, data: assignment } = useQuery({
-		queryKey: [queryKey],
+		queryKey: [queryKey1],
 		cacheTime: 1000,
 		refetchInterval: 5 * 60 * 1000,
-		queryFn: async () => await getData(`${queryKey}/${assignmentId}`)
+		queryFn: async () => await getData(`${queryKey1}/${assignmentId}`)
+	});
+
+	const { data: rapporten } = useQuery({
+		queryKey: [queryKey2],
+		cacheTime: 1000,
+		refetchInterval: 5 * 60 * 1000,
+		queryFn: async () => await getData(queryKey2)
 	});
 
 	isLoading && <LoadingComponent />;
 	isError && <ErrorScreen error={error} />;
 
 	useEffect(() => {
-		if (assignment) {
-			setSubAssignments(assignment.data.OpdrachtElement)
-			putData(`${queryKey}/${assignmentId}`, assignment.data);
+		if (rapporten) {
+			setRapports(rapporten.data);
 		}
-	}, [assignment, assignmentId]);
+	}, [rapporten]);
+
+	useEffect(() => {
+		if (assignment && rapports) {
+			const subAssignmentsData = assignment.data.OpdrachtElement;
+			const updatedSubAssignments = subAssignmentsData.map((subAssignment) => {
+				// Find the matching rapport for this subAssignment
+				const rapport = rapports.find((rapport) => rapport.opdrachtElementId === subAssignment.id);
+
+				// Add the status field to the subAssignment object
+				return {
+					...subAssignment,
+					//Als er een rapport voor is status gebruiken, anders bezig
+					status: rapport ? rapport.status : "bezig",
+				}
+			});
+
+			// Set the state with the updated subAssignments
+			setSubAssignments(updatedSubAssignments);
+		}
+	}, [rapports, assignment]);
 
 	const handleStatusChange = (id, newStatus) => {
 		// Find the subAssignment with the matching id and update its status
@@ -41,16 +73,29 @@ const AssignmentDetailComponent = () => {
 					status: newStatus,
 				};
 			}
+			console.log(subAssignment)
 			return subAssignment;
 		});
+
 		// Set the state with the updated subAssignments
 		setSubAssignments(updatedSubAssignments);
+
+		Axios.post(`${API_URL}/rapport`, {
+			opdrachtElementId: id,
+			status: newStatus,
+		}, { withCredentials: true })
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
 	};
 
-	const handleTimeRequest = (subAssignmentId, increment) => {
+	const handleTimeRequest = (id, increment) => {
 		// Find the subAssignment that has the matching id
 		const subAssignment = subAssignments.find(
-			(subAssignment) => subAssignment.id === subAssignmentId
+			(subAssignment) => subAssignment.id === id
 		);
 
 		// Update the timeLeft of the subAssignment
@@ -58,12 +103,29 @@ const AssignmentDetailComponent = () => {
 
 		// Update the state with the modified subAssignments array
 		setSubAssignments([...subAssignments]);
+
+		console.log(subAssignment)
+		// Send the updated subAssignment to the backend
+		Axios.post(`${API_URL}/rapport`, {
+			opdrachtElementId: subAssignment.id,
+			status: subAssignment.status,
+			extraMinuten: increment,
+		}, { withCredentials: true })
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
 	};
 
 	const toggleQuestionInput = () => {
 		setShowQuestionInput(!showQuestionInput);
-	}
 
+		if (showQuestionInput) {
+			return <QuestionComponent />;
+		}
+	}
 
 	return subAssignments && (
 		<>
@@ -82,7 +144,7 @@ const AssignmentDetailComponent = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{subAssignments.map((subAssignment, index) => (
+						{subAssignments && subAssignments.map((subAssignment, index) => (
 							<tr key={index}>
 								<td className="w-1/2 whitespace-normal text-justify px-8 py-2" > {subAssignment.beschrijving}</td>
 								<td className="text-center text-gray-600 mb-1 px-4 py-2">{subAssignment.minuten}</td>
@@ -90,12 +152,12 @@ const AssignmentDetailComponent = () => {
 									<select
 										className="w-50 m-2 bg-gray-200 px-4 py-2 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
 										//Default value is "Bezig"
-										value={subAssignment.status || "Bezig"}
+										value={subAssignment.status}
 										onChange={(e) => handleStatusChange(subAssignment.id, e.target.value)}>
-										<option value="in progress">Bezig</option>
-										<option value="ready">Klaar</option>
-										<option value="not participating">Doet niet mee</option>
-										<option value="gave up">Opgegeven</option>
+										<option value="bezig">Bezig</option>
+										<option value="klaar">Klaar</option>
+										<option value="doet niet mee">Doet niet mee</option>
+										<option value="opgegeven">Opgegeven</option>
 									</select>
 								</td>
 								<td className="px-4 py-2">
@@ -119,13 +181,14 @@ const AssignmentDetailComponent = () => {
 									</button>
 								</td>
 								<td className="px-4 py-2">
-									<button>
+									<button onClick={toggleQuestionInput}>
 										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
 											<path strokeLinecap="round" strokeLinejoin="round" d="M10.05 4.575a1.575 1.575 0 10-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 013.15 0v1.5m-3.15 0l.075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 013.15 0V15M6.9 7.575a1.575 1.575 0 10-3.15 0v8.175a6.75 6.75 0 006.75 6.75h2.018a5.25 5.25 0 003.712-1.538l1.732-1.732a5.25 5.25 0 001.538-3.712l.003-2.024a.668.668 0 01.198-.471 1.575 1.575 0 10-2.228-2.228 3.818 3.818 0 00-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0116.35 15m.002 0h-.002" />
 										</svg>
 									</button>
 								</td>
 							</tr>
+
 						))}
 					</tbody>
 				</table>

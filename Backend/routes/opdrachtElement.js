@@ -18,7 +18,6 @@ router.get('/:id', async (req, res) => {
         });
 
         if (opdracht) {
-            console.log(opdracht);
             res.status(200).json(opdracht);
         }
     } catch (error) {

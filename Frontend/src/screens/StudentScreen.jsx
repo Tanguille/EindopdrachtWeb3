@@ -9,7 +9,6 @@ const StudentScreen = () => {
 			<StudentNavbar />
 			<div className="flex flex-col md:flex-row md:justify-between">
 				<AssignmentComponent className="w-full md:w-1/2" />
-				<QuestionComponent className="w-full md:w-1/2" />
 			</div>
 		</div>
 	);

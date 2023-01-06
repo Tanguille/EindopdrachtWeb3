@@ -27,11 +27,10 @@ router.get('/', async (req, res) => {
 //Post request
 router.post('/', async (req, res) => {
     try {
-        console.log("body", req.body)
-        console.log(req.student);
         const rapport = await prisma.Rapport.upsert({
             where: {
                 opdrachtElementId: req.body.opdrachtElementId,
+
             },
             update: {
                 status: req.body.status,

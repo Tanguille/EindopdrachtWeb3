@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     let csvData;
     try {
         csvData = req.body;
-        res.status(200).json(csvData);
+        res.status(201).json(csvData);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

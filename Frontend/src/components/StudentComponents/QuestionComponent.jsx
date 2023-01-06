@@ -1,12 +1,26 @@
 import React, { useState } from "react";
+import Axios from "axios";
+import config from "../../config";
 
 
-const QuestionComponent = ({ setVisible }) => {
+const QuestionComponent = ({ rapport, setVisible }) => {
 	const [question, setQuestion] = useState("");
+	const API_URL = config.API_URL;
 
 	const handleSubmit = () => {
-		//TODO: Submit the question to the server or perform some other action
-		console.log(question);
+		console.log(rapport);
+
+		Axios.post(`${API_URL}/vraag`, {
+			beschrijving: question,
+			rapportId: rapport.id,
+		}, { withCredentials: true })
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+
 		setQuestion("");
 	};
 

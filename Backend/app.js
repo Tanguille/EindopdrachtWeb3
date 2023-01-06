@@ -12,6 +12,7 @@ const csvRouter = require('./routes/csv');
 const opdrachtRouter = require('./routes/opdracht');
 const opdrachtElementRouter = require('./routes/opdrachtElement');
 const rapportRouter = require('./routes/rapport');
+const vraagRouter = require('./routes/vraag');
 
 const app = express();
 
@@ -41,5 +42,6 @@ app.use('/csv', csvRouter);
 app.use('/opdracht', opdrachtRouter);
 app.use('/opdrachtElement', opdrachtElementRouter);
 app.use('/rapport', rapportRouter);
+app.use('/vraag', vraagRouter);
 
 module.exports = app;

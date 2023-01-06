@@ -7,7 +7,11 @@ const prisma = new PrismaClient();
 //Post request
 router.get('/', async (req, res) => {
     try {
-        const opdrachten = await prisma.Opdracht.findMany();
+        const opdrachten = await prisma.Opdracht.findMany({
+            include: {
+                OpdrachtElement: {},
+            },
+        });
         if (opdrachten) {
             console.log(opdrachten);
             res.status(200).json(opdrachten);

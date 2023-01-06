@@ -1,6 +1,5 @@
 import React from "react";
 import AssignmentComponent from "../components/AssignmentComponent";
-import QuestionComponent from "../components/StudentComponents/QuestionComponent";
 import StudentNavbar from "../components/StudentComponents/StudentNavbar";
 
 const StudentScreen = () => {

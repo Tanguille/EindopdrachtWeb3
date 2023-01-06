@@ -47,15 +47,15 @@ model Rapport {
   opdrachtElementId Int             @unique
   student           Student         @relation(fields: [studentId], references: [id])
   opdrachtElement   OpdrachtElement @relation(fields: [opdrachtElementId], references: [id])
-  VraagStudent      VraagStudent?
+  VraagStudent      VraagStudent[]
 }
 
 model VraagStudent {
-  id           Int     @id @default(autoincrement())
-  beschrijving String  @db.VarChar(191)
-  geldig       Int     @default(1)
-  rapportId    Int     @unique
-  rapport      Rapport @relation(fields: [rapportId], references: [id])
+  id           Int      @id @default(autoincrement())
+  beschrijving String   @db.VarChar(191)
+  geldig       Int      @default(1)
+  rapportId    Int
+  rapport      Rapport? @relation(fields: [rapportId], references: [id])
 }
 
 model OpdrachtElement {

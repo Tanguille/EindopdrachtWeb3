@@ -9,13 +9,7 @@ export const getData = async (queryKey) => {
     return response;
 };
 
-// export const putData = async (queryKey, data) => {
-//     const response = await Axios.put(`${API_URL}/${queryKey}`, data, {
-//         withCredentials: true,
-//     });
 
-//     return response;
-// };
 
 
 

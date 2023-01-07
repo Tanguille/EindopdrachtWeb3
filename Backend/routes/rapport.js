@@ -30,7 +30,6 @@ router.post('/', async (req, res) => {
         const rapport = await prisma.Rapport.upsert({
             where: {
                 opdrachtElementId: req.body.opdrachtElementId,
-
             },
             update: {
                 status: req.body.status,

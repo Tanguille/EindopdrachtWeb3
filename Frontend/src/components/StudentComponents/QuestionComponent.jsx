@@ -1,27 +1,33 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import config from "../../config";
+import io from "socket.io-client";
 
+const socket = io(config.API_URL);
 
 const QuestionComponent = ({ rapport, setVisible }) => {
 	const [question, setQuestion] = useState("");
 	const API_URL = config.API_URL;
 
 	const handleSubmit = () => {
-		console.log(rapport);
-
+		console.log(rapport)
 		Axios.post(`${API_URL}/vraag`, {
 			beschrijving: question,
 			rapportId: rapport.id,
 		}, { withCredentials: true })
 			.then(function (response) {
-				console.log(response);
+				console.log(response.data);
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
 
+		socket.emit("sendQuestion", {
+			question, rapportId: rapport.id
+		});
+
 		setQuestion("");
+		setVisible(false);
 	};
 
 	const hideModal = () => {

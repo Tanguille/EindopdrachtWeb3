@@ -3,7 +3,9 @@ import AssignmentComponent from '../components/AssignmentComponent'
 
 const HostScreen = () => {
     return (
-        <div><AssignmentComponent /></div>
+        <div>
+            <AssignmentComponent />
+        </div>
     )
 }
 

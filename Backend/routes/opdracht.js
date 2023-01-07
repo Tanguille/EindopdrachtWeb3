@@ -14,10 +14,10 @@ router.get('/', async (req, res) => {
         });
         if (opdrachten) {
             console.log(opdrachten);
-            res.status(200).json(opdrachten);
+            return res.status(200).json(opdrachten);
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 });
 

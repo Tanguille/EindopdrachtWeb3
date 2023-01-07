@@ -22,7 +22,7 @@ const RootNavigator = () => {
 			<Route path="/host" element={<HostScreen />} />
 			<Route path="/host/opdracht/:assignmentId"
 				element={<HostAssignmentDetailComponent />} />
-			<Route path="/host/opdracht/:assignmentId/rapporten"
+			<Route path="/host/opdracht/:assignmentId/rapporten/:subAssignmentId"
 				element={<RapportsComponent />} />
 
 			<Route path="/student" element={<StudentScreen />} />

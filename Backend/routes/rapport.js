@@ -15,9 +15,25 @@ router.get('/', async (req, res) => {
                 studentId: req.student.studentId,
             },
         });
-        if (rapporten) {
-            res.status(200).json(rapporten);
-        }
+        if (rapporten) res.status(200).json(rapporten);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message });
+    }
+});
+
+//Post request
+router.post('/extraTijd', async (req, res) => {
+    try {
+        const aggregations = await prisma.Rapport.aggregate({
+            _avg: {
+                extraMinuten: true,
+            },
+            where: {
+                opdrachtElementId: req.body.opdrachtElementId,
+            },
+        })
+        if (aggregations._avg.extraMinuten) res.status(200).json(aggregations._avg.extraMinuten);
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message });

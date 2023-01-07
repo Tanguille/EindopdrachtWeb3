@@ -8,6 +8,7 @@ import StudentNavbar from "./StudentNavbar";
 import Axios from "axios";
 import config from "../../config";
 import QuestionComponent from "./QuestionComponent";
+import io from "socket.io-client";
 
 const AssignmentDetailComponent = () => {
 	const [subAssignments, setSubAssignments] = useState();
@@ -16,6 +17,7 @@ const AssignmentDetailComponent = () => {
 	const [vraagRapport, setVraagRapport] = useState();
 
 	const API_URL = config.API_URL;
+	const socket = io.connect(config.API_URL);
 	const queryKey1 = "opdrachtElement";
 	const queryKey2 = "rapport";
 	// Dynamische parameter uit de url te halen

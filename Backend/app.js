@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const helmet = require("helmet");
+const bodyParser = require('body-parser')
 const auth = require('./middlewares/authenticator');
 
 //TODO: Bcrypt
@@ -22,15 +24,22 @@ const app = express();
 
 
 //middleware
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
     origin: ['http://localhost:3000'],
     credentials: true
 }));
+
+
 
 //Socket.io
 const server = require('http').createServer(app);
@@ -42,20 +51,15 @@ const io = require('socket.io')(server, {
 });
 server.listen(process.env.PORT);
 io.on('connection', (socket) => {
-    console.log(`user connected: ${socket.id}`);
-    socket.on('disconnect', () => { console.log(`user disconnected: ${socket.id}`) });
-
     socket.on('sendQuestion', (data) => {
         console.log('sendQuestion', data);
         io.emit('receiveQuestion', data);
     });
-
-
 });
 
 //Authentication middleware
 app.use((req, res, next) => {
-    //console.log("req.headers:", req.headers);
+    //TODO: Fix auth on host and admin
     if (req.path == '/login' || req.path == '/admin' || req.path == '/host') {
         next();
     } else

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "OpdrachtElement" ALTER COLUMN "minuten" SET DATA TYPE DOUBLE PRECISION;

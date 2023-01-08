@@ -14,10 +14,10 @@ router.post('/', async (req, res) => {
             },
         });
 
-        res.status(201).json(nieuweVraag);
+        return res.status(201).json(nieuweVraag);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 });
 

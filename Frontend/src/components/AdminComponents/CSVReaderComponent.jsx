@@ -35,15 +35,25 @@ const CSVFileInput = () => {
             complete: (result) => {
                 // Send the data to the backend
                 if (result.data.length > 0) {
+                    const csvData = result.data;
                     // send the data to the backend
                     console.log(`${API_URL}/csv`);
                     try {
-                        Axios.post(`${API_URL}/csv`, result.data)
+                        Axios.post(`${API_URL}/csv`, csvData,
+                            { withCredentials: true }, {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                        }
+                        )
                             .then((res) => {
                                 // handle the response
+                                console.log(res.data)
                                 toast.success(res.data.message, "success");
                             })
                             .catch((error) => {
+                                console.log(error);
                                 // handle the error
                                 <ErrorScreen error={error} />;
                             });
@@ -65,6 +75,7 @@ const CSVFileInput = () => {
                     className="m-2 bg-gray-200 px-4 py-2 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
+                    type="button"
                     onClick={handleSubmit}
                     className="ml-4 bg-blue-500 px-4 py-2 rounded-lg shadow-md text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Submit

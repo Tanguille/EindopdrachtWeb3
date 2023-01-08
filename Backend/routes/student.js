@@ -9,9 +9,9 @@ router.get('/', async (req, res, next) => {
   try {
     const alleStudenten = await prisma.Student.findMany();
     console.log("studenten:" + alleStudenten);
-    res.status(200).json(alleStudenten);
+    return res.status(200).json(alleStudenten);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -23,9 +23,9 @@ router.get('/:email', async (req, res, next) => {
         email: parseInt(req.params.email),
       },
     });
-    res.status(200).json(student);
+    return res.status(200).json(student);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 });
 

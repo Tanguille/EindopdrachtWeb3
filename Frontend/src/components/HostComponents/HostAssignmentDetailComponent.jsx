@@ -22,10 +22,10 @@ const HostAssignmentDetailComponent = () => {
     // Dynamische parameter uit de url te halen
     const { assignmentId } = useParams();
 
-    const { isLoading, isError, error, data: assignment } = useQuery({
+    const { isLoading, isError, error, data: subAssignment } = useQuery({
         queryKey: [queryKey],
         cacheTime: 1000,
-        refetchInterval: 5 * 60 * 1000,
+        refetchInterval: 1 * 60 * 1000,
         queryFn: async () => await getData(`${queryKey}/${assignmentId}`)
     });
 
@@ -33,13 +33,13 @@ const HostAssignmentDetailComponent = () => {
     isError && <ErrorScreen error={error} />;
 
     useEffect(() => {
-        if (assignment) {
-            const subAssignmentsData = assignment.data.OpdrachtElement;
+        if (subAssignment) {
+            const subAssignmentsData = subAssignment.data;
 
             // Set the state with the updated subAssignments
             setSubAssignments(subAssignmentsData);
         }
-    }, [assignment]);
+    }, [subAssignment]);
 
     const updateIsRunning = (id) => {
         setIsTimerRunning((prevIsRunning) => ({
@@ -56,9 +56,6 @@ const HostAssignmentDetailComponent = () => {
         <>
             <HostNavbar />
             <div className="mx-auto p-8 bg-gray-200 rounded-lg shadow-md flex flex-col">
-                <h1 className="text-2xl font-bold text-gray-800 mb-4">
-                    {assignment.naam}
-                </h1>
                 <table className="w-full text-left table-collapse class=w-1/2 mx-auto p-8 bg-white rounded-lg shadow-md">
                     <thead>
                         <tr>

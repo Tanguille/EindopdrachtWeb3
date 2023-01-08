@@ -61,11 +61,10 @@ io.on('connection', (socket) => {
 
 //Authentication middleware
 app.use((req, res, next) => {
-    //TODO: Fix auth on host and admin
-    if (req.path == '/login' || req.path == '/admin' || req.path == '/host') {
+    //TODO: Fix authentication for host want /opdracht wordt ook door host gebruikt.
+    if (req.path == '/login' || req.path == '/csv') {
         next();
-    } else
-        auth(req, res, next);
+    } else auth(req, res, next);
 });
 
 //Routes gebruiken
@@ -76,5 +75,6 @@ app.use('/opdracht', opdrachtRouter);
 app.use('/opdrachtElement', opdrachtElementRouter);
 app.use('/rapport', rapportRouter);
 app.use('/vraag', vraagRouter);
+
 
 module.exports = app;

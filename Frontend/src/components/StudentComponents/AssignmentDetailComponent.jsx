@@ -25,10 +25,10 @@ const AssignmentDetailComponent = () => {
 	// Dynamische parameter uit de url te halen
 	const { assignmentId } = useParams();
 
-	const { isLoading, isError, error, data: assignment } = useQuery({
+	const { isLoading, isError, error, data: subAssignment } = useQuery({
 		queryKey: [queryKey1],
 		cacheTime: 1000,
-		refetchInterval: 5 * 60 * 1000,
+		refetchInterval: 1 * 60 * 1000,
 		queryFn: async () => await getData(`${queryKey1}/${assignmentId}`)
 	});
 
@@ -49,8 +49,8 @@ const AssignmentDetailComponent = () => {
 	}, [rapporten]);
 
 	useEffect(() => {
-		if (assignment && rapports) {
-			const subAssignmentsData = assignment.data.OpdrachtElement;
+		if (subAssignment && rapports) {
+			const subAssignmentsData = subAssignment.data;
 			const updatedSubAssignments = subAssignmentsData.map((subAssignment) => {
 				// Find the matching rapport for this subAssignment
 				const matchingRapports = rapports.filter((rapport) => rapport.opdrachtElementId === subAssignment.id);
@@ -67,7 +67,7 @@ const AssignmentDetailComponent = () => {
 			// Set the state with the updated subAssignments
 			setSubAssignments(updatedSubAssignments);
 		}
-	}, [rapports, assignment]);
+	}, [rapports, subAssignment]);
 
 	const handleStatusChange = (id, newStatus) => {
 		// Find the subAssignment with the matching id and update its status
@@ -78,7 +78,6 @@ const AssignmentDetailComponent = () => {
 					status: newStatus,
 				};
 			}
-			console.log(subAssignment)
 			return subAssignment;
 		});
 
@@ -98,27 +97,29 @@ const AssignmentDetailComponent = () => {
 	};
 
 	const handleTimeRequest = (subAssignmentId, increment) => {
-		//Find the rapport
-		const rapport = rapports.find((rapport) => rapport.opdrachtElementId === subAssignmentId) || {};
+		if (increment != null) {
+			//Find the rapport
+			const rapport = rapports.find((rapport) => rapport.opdrachtElementId === subAssignmentId) || {};
+			// Update the timeLeft of the subAssignment
+			rapport.extraMinuten += increment;
+			console.log(rapport)
 
-		// Update the timeLeft of the subAssignment
-		rapport.extraMinuten += increment;
+			// Update the state with the modified subAssignments array
+			setRapports([...rapports]);
 
-		// Update the state with the modified subAssignments array
-		setRapports([...rapports]);
-
-		// Send the updated rapport to the backend
-		Axios.post(`${API_URL}/rapport`, {
-			opdrachtElementId: subAssignmentId,
-			status: rapport.status,
-			extraMinuten: rapport.extraMinuten,
-		}, { withCredentials: true })
-			.then(function (response) {
-				console.log(response);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
+			// Send the updated rapport to the backend
+			Axios.post(`${API_URL}/rapport`, {
+				opdrachtElementId: subAssignmentId,
+				status: rapport.status,
+				extraMinuten: rapport.extraMinuten,
+			}, { withCredentials: true })
+				.then(function (response) {
+					console.log(response);
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		}
 	};
 
 	const showQuestionInput = (subAssignmentId) => {
@@ -147,6 +148,10 @@ const AssignmentDetailComponent = () => {
 	};
 
 	const updateTimerIsRunning = (id) => {
+		socket.on("receiveResterendeTijd", (data) => {
+			console.log(data);
+		});
+
 		setTimerIsRunning((prevIsRunning) => ({
 			...prevIsRunning,
 			[id]: !prevIsRunning[id], // toggle the value for the given id
@@ -165,9 +170,6 @@ const AssignmentDetailComponent = () => {
 		<>
 			<StudentNavbar />
 			<div className="mx-auto p-8 bg-gray-200 rounded-lg shadow-md flex flex-col">
-				<h1 className="text-2xl font-bold text-gray-800 mb-4">
-					{assignment.naam}
-				</h1>
 				<table className="w-full text-left table-collapse class=w-1/2 mx-auto p-8 bg-white rounded-lg shadow-md">
 					<thead>
 						<tr>
@@ -201,27 +203,27 @@ const AssignmentDetailComponent = () => {
 										<option value="opgegeven">Opgegeven</option>
 									</select>
 								</td>
-								<td className="px-4 py-2">
+								<td className="pl-4 py-2">
 									<button
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 w-20"
+										className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded mr-2 w-20 m-2"
 										onClick={() => handleTimeRequest(subAssignment.id, 1)}
 									>
 										+1 min
 									</button>
 									<button
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 w-20"
+										className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded mr-2 w-20 m-2"
 										onClick={() => handleTimeRequest(subAssignment.id, 5)}
 									>
 										+5 min
 									</button>
 									<button
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
+										className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded w-20 ml-2"
 										onClick={() => handleTimeRequest(subAssignment.id, 10)}
 									>
 										+10 min
 									</button>
 								</td>
-								<td className="px-4 py-2">
+								<td className="pr-8 py-2">
 									<button onClick={() => showQuestionInput(subAssignment.id)}>
 										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
 											<path strokeLinecap="round" strokeLinejoin="round" d="M10.05 4.575a1.575 1.575 0 10-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 013.15 0v1.5m-3.15 0l.075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 013.15 0V15M6.9 7.575a1.575 1.575 0 10-3.15 0v8.175a6.75 6.75 0 006.75 6.75h2.018a5.25 5.25 0 003.712-1.538l1.732-1.732a5.25 5.25 0 001.538-3.712l.003-2.024a.668.668 0 01.198-.471 1.575 1.575 0 10-2.228-2.228 3.818 3.818 0 00-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0116.35 15m.002 0h-.002" />

@@ -28,12 +28,13 @@ router.post('/', async (req, res) => {
 
         if (student) {
             res.cookie('token', token, { path: '/', httpOnly: true, withCredentials: true, sameSite: 'none', secure: true });
-            res.status(200).json(student);
+            return res.status(200).json(student);
         } else {
-            res.send('Email of wachtwoord is onjuist');
+            return res.send('Email of wachtwoord is onjuist');
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error)
+        return res.status(500).json({ message: error.message });
     }
 });
 

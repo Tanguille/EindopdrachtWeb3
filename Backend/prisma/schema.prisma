@@ -39,14 +39,14 @@ model Groep {
 }
 
 model Rapport {
-  id                Int             @id @default(autoincrement())
+  id                Int               @id @default(autoincrement())
   status            String
   extraMinuten      Int?
-  geldig            Int             @default(1)
+  geldig            Int               @default(1)
   studentId         Int
-  opdrachtElementId Int             @unique
-  student           Student         @relation(fields: [studentId], references: [id])
-  opdrachtElement   OpdrachtElement @relation(fields: [opdrachtElementId], references: [id])
+  opdrachtElementId Int
+  student           Student           @relation(fields: [studentId], references: [id])
+  opdrachtElement   OpdrachtElement[]
   VraagStudent      VraagStudent[]
 }
 
@@ -61,11 +61,12 @@ model VraagStudent {
 model OpdrachtElement {
   id           Int      @id @default(autoincrement())
   beschrijving String   @db.VarChar(255)
-  minuten      Int
+  minuten      Float
   geldig       Int      @default(1)
   opdrachtId   Int
   opdracht     Opdracht @relation(fields: [opdrachtId], references: [id])
-  Rapport      Rapport?
+  Rapport      Rapport? @relation(fields: [rapportId], references: [id])
+  rapportId    Int?
 }
 
 model Opdracht {

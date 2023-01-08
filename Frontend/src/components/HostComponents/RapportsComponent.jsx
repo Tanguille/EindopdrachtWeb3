@@ -24,6 +24,7 @@ const RapportsComponent = () => {
         queryFn: async () => await getData(queryKey)
     });
 
+
     isLoading && <LoadingComponent />;
     isError && <ErrorScreen error={error} />;
 

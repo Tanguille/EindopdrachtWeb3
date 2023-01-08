@@ -39,8 +39,6 @@ app.use(cors({
     credentials: true
 }));
 
-
-
 //Socket.io
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
@@ -54,6 +52,10 @@ io.on('connection', (socket) => {
     socket.on('sendQuestion', (data) => {
         console.log('sendQuestion', data);
         io.emit('receiveQuestion', data);
+    });
+    socket.on('sendResterendeTijd', (data) => {
+        console.log('sendResterendeTijd', data);
+        io.emit('receiveResterendeTijd', data);
     });
 });
 

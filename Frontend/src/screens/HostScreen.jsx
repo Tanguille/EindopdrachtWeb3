@@ -6,17 +6,14 @@ const HostScreen = () => {
     return (
         <div>
             <HostNavbar />
-            <div className="flex justify-end">
+            <div>
                 <div className="flex flex-col md:flex-row">
-                    <AssignmentComponent />
-                    <button className="py-2 px-4 m-4 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-bold h-10 w-60 mt-8 ml-auto">Uitzetten verzoek extra tijd</button>
+                    <AssignmentComponent className="w-full md:w-1/2" />
+                    <button className="m-4 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-bold h-10 w-60 mt-8 ml-auto">Uitzetten verzoek extra tijd</button>
                 </div>
             </div>
         </div>
     )
-
-
-
 }
 
-export default HostScreen
+export default HostScreen;

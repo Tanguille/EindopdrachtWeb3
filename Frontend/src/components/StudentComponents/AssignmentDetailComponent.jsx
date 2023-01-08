@@ -9,9 +9,11 @@ import Axios from "axios";
 import config from "../../config";
 import QuestionComponent from "./QuestionComponent";
 import io from "socket.io-client";
+import TimerComponent from "../TimerComponent";
 
 const AssignmentDetailComponent = () => {
 	const [subAssignments, setSubAssignments] = useState();
+	const [isRunning, setTimerIsRunning] = useState({});
 	const [visible, setVisible] = useState(false)
 	const [rapports, setRapports] = useState();
 	const [vraagRapport, setVraagRapport] = useState();
@@ -144,6 +146,21 @@ const AssignmentDetailComponent = () => {
 		} else return rapport;
 	};
 
+	const updateTimerIsRunning = (id) => {
+		setTimerIsRunning((prevIsRunning) => ({
+			...prevIsRunning,
+			[id]: !prevIsRunning[id], // toggle the value for the given id
+		}));
+	};
+
+	useEffect(() => {
+		socket.on("receiveQuestion", (data) => {
+			console.log(data);
+		});
+		return () => socket.off();
+	});
+
+
 	return subAssignments && (
 		<>
 			<StudentNavbar />
@@ -163,8 +180,15 @@ const AssignmentDetailComponent = () => {
 					<tbody>
 						{subAssignments && subAssignments.map((subAssignment, index) => (
 							<tr key={index}>
-								<td className="w-1/2 whitespace-normal text-justify px-8 py-2" > {subAssignment.beschrijving}</td>
-								<td className="text-center text-gray-600 mb-1 px-4 py-2">{subAssignment.minuten}</td>
+								<td className="w-2/5 whitespace-normal text-justify px-8 py-2" > {subAssignment.beschrijving}</td>
+								<td className="text-center text-gray-600 mb-1 px-4 py-2">
+									<TimerComponent
+										deadline={subAssignment.minuten}
+										isRunning={isRunning[subAssignment.id]}
+										onStartPause={() => updateTimerIsRunning(subAssignment.id)}
+										id={subAssignment.id}
+									/>
+								</td>
 								<td className="px-4 py-2">
 									<select
 										className="w-50 m-2 bg-gray-200 px-4 py-2 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -179,19 +203,19 @@ const AssignmentDetailComponent = () => {
 								</td>
 								<td className="px-4 py-2">
 									<button
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 w-20"
 										onClick={() => handleTimeRequest(subAssignment.id, 1)}
 									>
 										+1 min
 									</button>
 									<button
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 w-20"
 										onClick={() => handleTimeRequest(subAssignment.id, 5)}
 									>
 										+5 min
 									</button>
 									<button
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-20"
 										onClick={() => handleTimeRequest(subAssignment.id, 10)}
 									>
 										+10 min

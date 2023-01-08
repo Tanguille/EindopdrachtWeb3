@@ -25,6 +25,7 @@ router.get('/', async (req, res) => {
 //Post request
 router.post('/extraTijd', async (req, res) => {
     try {
+        console.log(req.body.opdrachtElementId);
         const aggregations = await prisma.Rapport.aggregate({
             _avg: {
                 extraMinuten: true,
